@@ -1,0 +1,7 @@
+/applicationContext-hibernate.xml
+/applicationContext-transaction.xml
+/com
+/hibernate
+/log4j.properties
+/struts
+/struts.xml

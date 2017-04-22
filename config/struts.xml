@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<include file="struts/struts-root.xml"></include>
+	<include file="struts/struts-back.xml"></include>
+	<include file="struts/struts-front.xml"></include>
+	<package name="my_project_default" abstract="true" extends="struts-default"></package>
+</struts>    

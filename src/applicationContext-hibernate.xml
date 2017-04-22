@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan
+		base-package="com.newsrelease.back.dao.impl,com.newsrelease.front.dao.impl,com.newsrelease.back.service.impl,com.newsrelease.user.action,com.newsrelease.front.service.impl,com.newsrelease.back.action,com.newsrelease.front.action"></context:component-scan>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="url"
+			value="jdbc:mysql://112.74.43.236:3306/news?useUnicode=true&amp;characterEncoding=utf-8">
+		</property>
+		<property name="username" value="gaoyun"></property>
+		<property name="password" value="gy123456"></property>
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">
+					true
+				</prop>
+				<prop key="hibernate.format_sql">
+					true
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>hibernate/History.hbm.xml</value>
+				<value>hibernate/User.hbm.xml</value>
+				<value>hibernate/Newstype.hbm.xml</value>
+				<value>hibernate/Save.hbm.xml</value>
+				<value>hibernate/News.hbm.xml</value>
+				<value>hibernate/Comment.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 配置一个hibernateTemplate -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+</beans>
