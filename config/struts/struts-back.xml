@@ -5,7 +5,7 @@
 		<action name="user_*" class="userAction" method="{1}">
 			<result name="suc">/pages/back/back_index.jsp</result>
 			<result name="input">/pages/back/back_login.jsp</result>
-			<result name="forward">/pages/front/front_comment.jsp</result>
+			<result name="forward">/pages/front/front_index.jsp</result>
 			<result name="list">/pages/back/back_index.jsp</result>
 		</action>
 		<action name="news_*" class="backNewsAction" method="{1}">

@@ -1,13 +1,13 @@
+<%@page import="com.newsrelease.pojo.User"%>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+			+ request.getServerName() + ":" + request.getServerPort()+ path + "/";
 %>
 <%@ page import="java.util.*"%>
+<%@ page import="java.lang.*"%>
 <%@ page import="java.text.*"%>
-<%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -25,80 +25,10 @@
 <link rel="stylesheet" href="css/style.css" />
 <script src='//zaole.net/sliding.js'></script>
 <script src="//assets.codepen.io/assets/common/stopExecutionOnTimeout-6c99970ade81e43be51fa877be0f7600.js"></script>
-
-<script>
-
-	function login() {
-		$("#loginBtn").click(function() {
-			$('#modal').css('display', 'block');
-			$('.modal-bg').fadeIn();
-		});
-		$('#close').click(function() {
-			$('.modal-bg').fadeOut();
-			$('#modal').fadeOut();
-			return false;
-		});
-	}
-	
-	function reg() {
-		$("#regBtn").click(function() {
-			$('#modal1').css('display', 'block');
-			$('.modal-bg1').fadeIn();
-		});
-		$('#close1').click(function() {
-			$('.modal-bg1').fadeOut();
-			$('#modal1').fadeOut();
-			return false;
-		});
-	}
-	
-	function loginOut(){
-		var flag=confirm("你确定要退出吗？");
-		if(flag){
-			<% session.removeAttribute("user");%>
-			window.location.href="pages/front/front_comment.jsp";
-			return true;
-		}	
-	}
-</script>
-
 </head>
 <body>
-	<!--用户登录-->
-	<div class="modal-bg" style="display: none;">
-		<div id="modal">
-			<span>请登录<a href="#close" id="close">×</a></span>
-			<span><font color="red">${message}</font></font></span>
-			<form action="pages/back/user_fontLogin.action" method="post">
-				<input id="username" name="user.name" type="textbox"
-					placeholder="请输入用户名" required> <input id="password"
-					name="user.password" type="password" placeholder="请输入密码" required>
-				<a id="forgot-link" href="#">没有账号?</a> <input type="submit"
-					value="登录" style="width:80px;border: none;font-family:'微软雅黑';float: right;background: #0FC491;margin-top: 15px;" />
-			</form>
-		</div>
-	</div>
-	<!-- 用户注册 -->
-	<div class="modal-bg1" style="display: none;">
-		<div id="modal1">
-			<span>欢迎注册<center>${message}</center><a href="#close" id="close1">×</a></span>
-			<form action="pages/back/user_insert.action" method="post">
-				<input id="username" name="user.name" type="textbox"
-					placeholder="请输入用户名" required style="margin-top:-10px"> 
-			    <input  
-					name="user.userType" type="hidden" value="0" required>
-					<input  
-					name="user.dateStr" type="hidden" value="<%=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())%>" required>
-				<input id="password"
-					name="user.password" type="password" placeholder="请输入密码" required>
-			    <input id="password"
-					name="confirm_password" type="password" placeholder="确认密码" required>
-				<input type="submit"
-					value="注册" style="width:80px;border: none;font-family:'微软雅黑';float:left;background: #0FC491;margin-left:100px;margin-top:0px;" />
-			</form>
-		</div>
-	</div>
-	
+	<!-- 登陆和注册界面 -->
+	<jsp:include page="login_reg.jsp"></jsp:include>
 	<!--导航-->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
@@ -113,7 +43,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="navbar">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.html">首页</a></li>
+				<li class="active"><a href="pages/front/front_index.jsp">首页</a></li>
 				<li><a href="#">国内</a></li>
 				<li><a href="#">国际</a></li>
 				<li><a href="#">体育</a></li>
@@ -146,10 +76,10 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="#">个人中心</a>
+								<a href="pages/front/user_center.jsp">个人中心</a>
 							</li>
 							<li>
-								<a href="#">密码修改</a>
+								<a href="">密码修改</a>
 							</li>
 							<li role="separator" class="divider"></li>
 							<li>
@@ -213,10 +143,21 @@
 		</div>
 		</footer>
 	</div>
-	<script>
-		$('#userOpen').click(function() {
-			$('#show').slideToggle('slow');
-		});
-	</script>
+	
+	<!-- 登陆失败js响应相应情况 -->
+	 <c:if test="${!empty message_login }">
+	 	<script type="text/javascript">
+	 	$('#modal').css('display', 'block');
+		$('.modal-bg').fadeIn();	
+	 	</script>
+	 </c:if>
+	<!-- 注册失败，js响应相应情况 -->
+	<c:if test="${!empty message_reg }">
+	   <script type="text/javascript">
+	   $('#modal1').css('display', 'block');
+		$('.modal-bg1').fadeIn();
+	   </script>
+	</c:if>
+	
 </body>
 </html>

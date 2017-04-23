@@ -30,6 +30,8 @@ public class UserAction extends ActionSupport {
 	private String verifyCode;
 	// 提示信息参数
 	private String message;
+	private String message_reg;
+	private String message_login;
 	// 跳转路径参数，指导forward.jsp的跳转
 	private String url;
 
@@ -47,14 +49,15 @@ public class UserAction extends ActionSupport {
 	 */
 	public String insert() throws Exception {
 		if (!confirm_password.equals(user.getPassword())) {
-			message = "输入两次密码不一致!";
+			message_reg = "两次输入的密码不一致!";
+			user=null;
 		} else {
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			user.setRegisterDate(new Timestamp(sdf.parse(user.getDateStr()).getTime()));
 			service.insert(user);
 			ServletActionContext.getRequest().getSession()
 			.setAttribute("user", user);
-			message = "注册成功!";
+			message_reg = "注册成功";
 		}
 		return "forward";
 	}
@@ -123,6 +126,7 @@ public class UserAction extends ActionSupport {
 				.getAttribute("verifyCode");
 		if (!verifyCode.equals(code)) {
 			message = "验证码不正确，请重新输入！";
+			user=null;
 			return "input";
 		}
 		if (flag && user.getUserType()==1) {
@@ -130,6 +134,7 @@ public class UserAction extends ActionSupport {
 					.setAttribute("user", user);
 			return "suc";
 		} else {
+			user=null;
 			message = "用户名或密码不正确，请重新登陆！";
 		}
 		return "input";
@@ -141,10 +146,8 @@ public class UserAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String fontLogin() throws Exception {
-		boolean flag = false;
-		System.out.println("****************"+user.getPassword());
+		boolean flag = false;		 
 		flag = service.login(user);
-		System.out.println("****************"+user.getPassword()+"**********flag");
 		/*// 获取验证码
 		String code = (String) ServletActionContext.getRequest().getSession()
 				.getAttribute("verifyCode");
@@ -155,10 +158,11 @@ public class UserAction extends ActionSupport {
 		
 		if (flag) {
 			ServletActionContext.getRequest().getSession()
-					.setAttribute("user", user);			
+					.setAttribute("user", user);	
+			message_login="";
 		} else {
 			user=null;	 	
-			message ="用户名或密码不正确，请重新登陆！";
+			message_login ="用户名或密码不正确，请重新登陆！";
 		}
 		return "forward";
 	}
@@ -253,6 +257,22 @@ public class UserAction extends ActionSupport {
 
 	public void setConfirm_password(String confirm_password) {
 		this.confirm_password = confirm_password;
+	}
+
+	public String getMessage_reg() {
+		return message_reg;
+	}
+
+	public void setMessage_reg(String message_reg) {
+		this.message_reg = message_reg;
+	}
+
+	public String getMessage_login() {
+		return message_login;
+	}
+
+	public void setMessage_login(String message_login) {
+		this.message_login = message_login;
 	}
 
 

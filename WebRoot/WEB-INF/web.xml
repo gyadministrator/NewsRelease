@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>NewsRelease</display-name>
 	<welcome-file-list>
-		<welcome-file>/pages/front/front_comment.jsp</welcome-file>
+		<welcome-file>/pages/front/front_index.jsp</welcome-file>
 	</welcome-file-list>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
