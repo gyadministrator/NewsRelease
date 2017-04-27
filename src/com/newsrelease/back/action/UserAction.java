@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
@@ -23,9 +24,12 @@ public class UserAction extends ActionSupport {
 	private IUserService service;
 	private List<User> allUser;
 	private User user;
-	
 	//确认密码，用作注册使用
 	private String confirm_password;
+	//旧密码，用作修改密码
+	private String old_password;
+	//新密码
+	private String new_password;
 	//验证码参数
 	private String verifyCode;
 	// 提示信息参数
@@ -51,7 +55,7 @@ public class UserAction extends ActionSupport {
 		if (!confirm_password.equals(user.getPassword())) {
 			message_reg = "两次输入的密码不一致!";
 			user=null;
-		} else {
+		} else {		
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			user.setRegisterDate(new Timestamp(sdf.parse(user.getDateStr()).getTime()));
 			service.insert(user);
@@ -59,6 +63,9 @@ public class UserAction extends ActionSupport {
 			.setAttribute("user", user);
 			message_reg = "注册成功";
 		}
+		ServletActionContext.getRequest().getSession()
+		.setAttribute("message_reg", message_reg);
+		url=url.substring(url.indexOf("/", 2)+1);
 		return "forward";
 	}
 
@@ -95,9 +102,13 @@ public class UserAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String update() throws Exception {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		user.setRegisterDate(new Timestamp(sdf.parse(user.getDateStr()).getTime()));
 		service.update(user);
-		message = "用户信息修改成功！";
-		url = "user_info.jsp";
+		message = "修改成功！";
+		url="pages/front/user_update.jsp";
+		ServletActionContext.getRequest().getSession()
+		.setAttribute("user", user);
 		return "forward";
 	}
 
@@ -146,26 +157,49 @@ public class UserAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String fontLogin() throws Exception {
-		boolean flag = false;		 
+		boolean flag = false;	
 		flag = service.login(user);
-		/*// 获取验证码
+		// 获取验证码
+		url=url.substring(url.indexOf("/", 2)+1);
 		String code = (String) ServletActionContext.getRequest().getSession()
 				.getAttribute("verifyCode");
 		if (!verifyCode.equals(code)) {
-			message = "验证码不正确，请重新输入！";
-			return "input";
-		}*/
-		
-		if (flag) {
+			message_login= "验证码不正确，请重新输入！";
+			user=null;
+			ServletActionContext.getRequest().getSession()
+			.setAttribute("message_login", message_login);
+			return "forward";
+		}	
+		if (flag) {		
 			ServletActionContext.getRequest().getSession()
 					.setAttribute("user", user);	
-			message_login="";
+			ServletActionContext.getRequest().getSession().removeAttribute("message_login");
 		} else {
 			user=null;	 	
 			message_login ="用户名或密码不正确，请重新登陆！";
+			ServletActionContext.getRequest().getSession()
+			.setAttribute("message_login", message_login);
+		}	
+		if(url.equals("pages/front/front_index.jsp")){
+			url="pages/front/news_findNewsAll.action";
 		}
 		return "forward";
 	}
+	
+    public String passwordUpdate()throws Exception{
+    	if(!old_password.equals(user.getPassword())){
+    		message="旧密码不正确，请重新输入！";
+    	}else if(!new_password.equals(confirm_password)){
+    		message="新密码两次输入不一致！";
+    	}else{
+    		service.updatePssword(user.getUserid(),new_password);
+    		message="修改成功";
+    		user.setPassword(new_password);
+    		ServletActionContext.getRequest().getSession()
+    		.setAttribute("user", user);
+    	}
+    	return "update";
+    }
 	public IUserService getService() {
 		return service;
 	}
@@ -275,5 +309,19 @@ public class UserAction extends ActionSupport {
 		this.message_login = message_login;
 	}
 
+	public String getOld_password() {
+		return old_password;
+	}
 
+	public void setOld_password(String old_password) {
+		this.old_password = old_password;
+	}
+
+	public String getNew_password() {
+		return new_password;
+	}
+
+	public void setNew_password(String new_password) {
+		this.new_password = new_password;
+	}
 }

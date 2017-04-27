@@ -44,24 +44,29 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		service.doRemove(14);
+		service.doRemove(20);
 	}
 
 	@Test
 	public void testUpdate() throws Exception {
 		User user=service.findById(14);
-		user.setAddress("贵州贵州大学测试");
+		user.setAddress("贵州贵州大学");
+		user.setUserid(14);
 		service.doUpdate(user);
 	}
 
 	@Test
 	public void testUpdatePre() throws Exception {
-		// 无测试必要
+		User user=new User();
+		user.setName("wuyongtai");
+		user.setPassword("123456");
+		 service.isLogin(user);
+		 System.out.println(user.getUserid()+"*********"+user.getRegisterDate());
 	}
 
 	@Test
 	public void testList() throws Exception {
-		List<User> all = service.findKeyAll(1,10,1);
+		List<User> all = service.findKeyAll(1,10,0);
 		System.out.println(all.size());
 		for (int i = 0; i < all.size(); i++) {
 			System.out.println(all.get(i).getName()+" "+all.get(i).getPassword());
@@ -70,8 +75,8 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testFindById() throws Exception {
-		User user = service.findById(1);
-		System.out.println(user.getName());
+		 service.updatePssword(14,"123456");
+		 
 	}
-
+     
 }

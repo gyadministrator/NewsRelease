@@ -1,6 +1,7 @@
 package com.newsrelease.back.dao.impl;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -128,6 +129,11 @@ public class UserDAOImpl extends HibernateDaoSupport implements IUserDAO {
 			user.setAge(result.getAge());
 			user.setSex(result.getSex());
 			user.setUserType(result.getUserType());
+			user.setUserid(result.getUserid());
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String str=sdf.format(result.getRegisterDate());
+			user.setRegisterDate(sdf.parse(str));
+			user.setDateStr(str);
 			return true;
 
 		}
@@ -146,5 +152,17 @@ public class UserDAOImpl extends HibernateDaoSupport implements IUserDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	@Override
+	 /**
+	  * 修改密码
+	  * @param id 用户id
+	  * @param password 新密码
+	  * @throws Exception
+	  */
+	public void updatePssword(int id,String password) throws Exception {
+		  User user=findById(id);
+		  user.setPassword(password);
+		  doUpdate(user);
+	}
 }

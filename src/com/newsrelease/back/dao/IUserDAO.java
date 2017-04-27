@@ -11,4 +11,5 @@ public interface IUserDAO extends IDAO<Integer, User> {
 	public List<User> findKeyAll(int pageNo, int pageSize, Integer keyword) throws Exception;
 
 	public int getKeyAllCount(Integer keyword) throws Exception;
+	public void updatePssword(int id,String password) throws Exception;
 }

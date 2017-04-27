@@ -9,8 +9,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>跳转页面</title>
-    <meta http-equiv="refresh" content="0;url=<%=basePath+request.getAttribute("url")%>">
+    <title>新闻网</title>
+    <meta http-equiv="refresh" content="0;url=pages/front/news_findNewsAll.action">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -19,8 +19,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+
   </head>
-  	 
+  
   <body>
+    <% session.removeAttribute("user");%> 
   </body>
 </html>

@@ -1,6 +1,7 @@
 package com.newsrelease.front.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -37,6 +38,14 @@ public class NewsCommentServiceImpl implements INewsCommentService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("allComment", newsCommentDAO.findAll(pageNo, pageSize));
 		map.put("allCount", newsCommentDAO.getAllCount());
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> findKeyAll(int pageNo, int pageSize,int keyword) throws Exception {
+		Map<String, Object> map = new HashMap<>();		
+		map.put("allComment",newsCommentDAO.findKeyAll(pageNo, pageSize, keyword));
+		map.put("allCount", newsCommentDAO.getKeyAllCount(Integer.toString(keyword),"news.newsid"));
 		return map;
 	}
 }

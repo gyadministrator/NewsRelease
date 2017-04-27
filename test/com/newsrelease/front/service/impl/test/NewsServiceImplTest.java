@@ -30,7 +30,7 @@ public class NewsServiceImplTest {
 	public void testSetNewsNewsDAO() {
 
 	}
-
+/*
 	@Test
 	public void testInsertNews() throws Exception {
 		News news = new News();
@@ -57,16 +57,20 @@ public class NewsServiceImplTest {
 		News news = dao.findById(2);
 		System.out.println(news.getTitle() + " " + news.getContent());
 	}
-
+*//*
 	@Test
 	public void testFindbyKeyword() throws Exception {
-		System.out.println(dao.findKeyAll(0, 10, "小米", "title"));
-	}
-
+		System.out.println(dao.findByIdAll(1, 10,3, "newstype.typeid"));
+	}*/
 	@Test
+	public void getKeyAllCount() throws Exception{
+		System.out.println(dao.getKeyAllCount("3","newstype.typeid"));
+	}
+	/*@Test
 	public void testFindsendAll() throws Exception {
 		System.out.println(dao.findAll(0, 10));
 	}
+
 
 	@Test
 	public void testFindAllNews() throws Exception {
@@ -74,5 +78,5 @@ public class NewsServiceImplTest {
 		System.out.println("-------------------------");
 		System.out.println(dao.getAllCount());
 	}
-
+*/
 }

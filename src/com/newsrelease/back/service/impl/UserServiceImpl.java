@@ -69,5 +69,13 @@ public class UserServiceImpl implements IUserService {
 		map.put("allCount", userDAO.getAllCount());
 		return map;
 	}
+	
+	/**
+	 * 用户密码修改
+	 */
+	@Override
+	public void updatePssword(int id, String password) throws Exception {
+		userDAO.updatePssword(id, password);	
+	}
 
 }

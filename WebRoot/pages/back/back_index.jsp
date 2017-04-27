@@ -42,7 +42,7 @@
 </style>
 <script type="text/javascript">
 	function front() {
-		window.location.href = "pages/front/front_comment.jsp";
+		window.location.href = "pages/front/news_findNewsAll.action";
 	}
 	function login() {
 		window.location.href = "pages/back/back_login.jsp";
@@ -59,6 +59,13 @@
 		document.getElementById("pageNo").value = Math.floor(p);
 		p = Math.floor(p);
 		window.location.href = "pages/back/user_list.action?pageNo=" + p + "";
+	}
+	
+	function changeHistoryPage(p) {
+		//改变页数
+		document.getElementById("pageNo").value = Math.floor(p);
+		p = Math.floor(p);
+		window.location.href = "pages/back/history_list.action?pageNo=" + p + "";
 	}
 </script>
 </head>
@@ -148,6 +155,25 @@
 						<ul id="sub5" class="nav collapse">
 							<li><a href="pages/back/user_list.action"><span
 									class="glyphicon glyphicon-list-alt pull-left"></span>&nbsp;查看所有用户</a>
+							</li>
+						</ul></li>
+					<!--  -->
+					<!-- 这里添加了历史 -->
+					<li><a href="#sub3" class="collapse" data-toggle="collapse"><span
+							class="glyphicon glyphicon-user pull-left"></span>用户历史<span
+							class="glyphicon glyphicon-chevron-right pull-right"></span></a>
+						<ul id="sub3" class="nav collapse">
+							<li><a href="pages/back/history_list.action"><span
+									class="glyphicon glyphicon-list-alt pull-left"></span>&nbsp;查看所有历史</a>
+							</li>
+						</ul></li>
+					<!-- 这里添加了收藏 -->
+					<li><a href="#sub4" class="collapse" data-toggle="collapse"><span
+							class="glyphicon glyphicon-user pull-left"></span>用户收藏<span
+							class="glyphicon glyphicon-chevron-right pull-right"></span></a>
+						<ul id="sub4" class="nav collapse">
+							<li><a href="pages/back/user_list.action"><span
+									class="glyphicon glyphicon-list-alt pull-left"></span>&nbsp;查看所有收藏</a>
 							</li>
 						</ul></li>
 					<!--  -->
@@ -263,7 +289,6 @@
 					<tr>
 						<th>序号</th>
 						<th>新闻标题</th>
-						<th>新闻内容</th>
 						<th>新闻类型</th>
 						<th>发布时间</th>
 						<th>点击量</th>
@@ -276,7 +301,6 @@
 						<tr class="info">
 							<td>${n.newsid}</td>
 							<td>${n.title}</td>
-							<td>${n.content}</td>
 							<td>${n.newstype.typeName}</td>
 							<td>${n.pubDate}</td>
 							<td>${n.clickNum}</td>
@@ -309,6 +333,57 @@
 				<li><input type="button" value="尾页"
 					${(count - 1) / pageSize<pageNo?"disabled":""}
 					onclick="changeNewsPage(${(count - 1) / pageSize + 1})"
+					class="btn btn-primary" /></li>
+			</ul>
+			</nav>
+		</div>
+	</c:if>
+	<!--*******显示历史*****  -->
+	 <c:if test="${allHistory!=null}">
+		<div 
+			style="background: #DBDBDB;margin-left:
+	270px;margin-top: 60px;">
+			<!-- 内容部分 -->
+			<table class="table table-condensed">
+				<thead>
+					<tr>
+						<th>序号</th>
+						<th>用户名</th>
+						<th>新闻标题</th>
+						<th>浏览时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${allHistory}" var="u">
+						<tr class="info">
+							<td>${u.historyid}</td>
+							<td>${u.user.name}</td>
+						    <td>${u.news.title}</td>
+							<td>${u.searchDate}</td>
+							<td><a
+								href="pages/back/history_delete.action?history.historyid=${u.historyid}"
+								onclick="return window.confirm('你确定要删除这个用户吗?')"><span
+									class="glyphicon glyphicon-trash"></span>&nbsp;删除</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<!-- 分页 -->
+			<nav class="pull-right" style="margin-right:30px;"> <input
+				type="hidden" id="pageNo" name="pageNo" value="${pageNo}" /> <input
+				type="hidden" id="pageSize" name="pageSize" value="${pageSize}" />
+			<ul class="pagination">
+				<li><input type="button" value="首页" ${pageNo==1?"disabled":""}
+					onclick="changeHistoryPage(1)" class="btn btn-primary" /></li>
+				<li></span><input type="button" value="上一页" ${pageNo==1?"disabled":""}
+					onclick="changeHistoryPage(${pageNo-1})" class="btn btn-success" /></li>
+				<li><input type="button" value="下一页"
+					${(count - 1) / pageSize<pageNo?"disabled":""}
+					onclick="changeHistoryPage(${pageNo+1})" class="btn btn-info" /></li>
+				<li><input type="button" value="尾页"
+					${(count - 1) / pageSize<pageNo?"disabled":""}
+					onclick="changeHistoryPage(${(count - 1) / pageSize + 1})"
 					class="btn btn-primary" /></li>
 			</ul>
 			</nav>

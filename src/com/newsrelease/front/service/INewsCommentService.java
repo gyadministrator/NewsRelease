@@ -39,5 +39,15 @@ public interface INewsCommentService {
 	public Map<String, Object> findSavesAll(int pageNo, int pageSize)
 			throws Exception;
 
+	/**
+	 * 通过关键字查询评论
+	 * @param pageNo
+	 * @param pageSize
+	 * @param keyword
+	 * @param column
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, Object> findKeyAll(final int pageNo,final int pageSize,final int keyword) throws Exception;
 
 }

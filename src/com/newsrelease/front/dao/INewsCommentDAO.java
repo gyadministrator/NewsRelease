@@ -17,4 +17,5 @@ public interface INewsCommentDAO extends IDAO<Integer, Comment> {
 
 	@Override
 	public int getAllCount() throws Exception;
+	public List<Comment> findKeyAll(int pageNo, int pageSize, int keyword) throws Exception;
 }

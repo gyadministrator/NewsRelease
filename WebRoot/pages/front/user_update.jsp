@@ -16,175 +16,63 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="css/bootstrap.min.css" rel="stylesheet" />
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <title>新闻发布系统</title>
-<link rel="stylesheet" href="css/bootstrap.min.css" />
-<link rel="stylesheet" href="css/style.css" />
-<script src='//zaole.net/sliding.js'></script>
-<script src="//assets.codepen.io/assets/common/stopExecutionOnTimeout-6c99970ade81e43be51fa877be0f7600.js"></script>
-
-<script>
-
-	function login() {
-		$("#loginBtn").click(function() {
-			$('#modal').css('display', 'block');
-			$('.modal-bg').fadeIn();
-		});
-		$('#close').click(function() {
-			$('.modal-bg').fadeOut();
-			$('#modal').fadeOut();
-			return false;
-		});
-	}
-	
-	function reg() {
-		$("#regBtn").click(function() {
-			$('#modal1').css('display', 'block');
-			$('.modal-bg1').fadeIn();
-		});
-		$('#close1').click(function() {
-			$('.modal-bg1').fadeOut();
-			$('#modal1').fadeOut();
-			return false;
-		});
-	}
-	
-	function loginOut(){
-		var flag=confirm("你确定要退出吗？");
-		if(flag){
-			<% session.removeAttribute("user");%>
-			window.location.href="pages/front/front_comment.jsp";
-			return true;
-		}	
-	}
-	
-	
-</script>
-
 </head>
 <body>
-	<!--用户登录-->
-	 
-	<div class="modal-bg" style="display: none;">
-		<div id="modal">
-			<span>请登录&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">${message_login}</font><a href="#close" id="close">×</a></span>
-			<form action="pages/back/user_fontLogin.action" method="post">
-				<input id="username" name="user.name" type="textbox"
-					placeholder="请输入用户名" required> <input id="password"
-					name="user.password" type="password" placeholder="请输入密码" required>
-				<a id="forgot-link" href="#">没有账号?</a> <input type="submit"
-					value="登录" style="width:80px;border: none;font-family:'微软雅黑';float: right;background: #0FC491;margin-top: 15px;" />
-			</form>
-		</div>
-	</div>
-	<!-- 用户注册 -->
-	<div class="modal-bg1" style="display: none;">
-		<div id="modal1">
-			<span>欢迎注册 &nbsp;&nbsp;&nbsp;&nbsp;<font color="red">${message_reg}</font><a href="#close" id="close1">×</a></span>
-			<form action="pages/back/user_insert.action" method="post">
-				<input id="username" name="user.name" type="textbox"
-					placeholder="请输入用户名" required style="margin-top:-10px"> 
-			    <input  
-					name="user.userType" type="hidden" value="0" required>
-					<input  
-					name="user.dateStr" type="hidden" value="<%=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())%>" required>
-				<input id="password"
-					name="user.password" type="password" placeholder="请输入密码" required>
-			    <input id="password"
-					name="confirm_password" type="password" placeholder="确认密码" required>
-				<input type="submit"
-					value="注册" style="width:80px;border: none;font-family:'微软雅黑';float:left;background: #0FC491;margin-left:100px;margin-top:0px;" />
+	<!-- 包含登陆和注册界面 -->
+	<jsp:include page="login_reg.jsp"></jsp:include>
+	<!--导航-->
+	<jsp:include page="head.jsp"></jsp:include>
+	<!-- 如果用户为空，请先登录 -->
+	<c:if test="${empty user}">
+		<script type="text/javascript">
+			$('#modal').css('display', 'block');
+			$('.modal-bg').fadeIn();
+		</script>
+	</c:if>
+	<!-- 主体 -->
+	<div class="divcenter" style="background:rgb(255,255,255);margin-bottom:200px;">
+		<div style="margin:0 auto;margin-top: 100px;width:300px">
+		<form action="pages/back/user_update.action" method="post">
+			<ul class="list-group" style="width:300px;">
+				<li class="list-group-item" style="">
+				 用户名:&nbsp;&nbsp; <input type="text" name="user.name" value="${user.name }" style="width:150px;height:30px" readonly="true">
+				 </li>
+				<li class="list-group-item">性&nbsp;&nbsp;&nbsp;别:&nbsp;&nbsp; <select
+					style="width:48px" name="user.sex">
+						<option value="男"
+							<c:if test="${user.sex==男}">selected="selected"</c:if>>男</option>
+						<option value="女"
+							<c:if test="${user.sex==女}">selected="selected"</c:if>>女</option>
+				</select>
+				</li>
+				<li class="list-group-item">年&nbsp;&nbsp;&nbsp;龄:&nbsp;&nbsp; <select
+					name="user.age"><c:forEach var="i" begin="1" end="120">
+							<option value="${i }"
+								<c:if test="${user.age==i}">selected="selected"</c:if>>${i }</option>
+						</c:forEach>
+				</select>
+				</li>
+				<li class="list-group-item">地&nbsp;&nbsp;&nbsp;址:&nbsp;&nbsp;<input
+					type="text" name="user.address" value="${user.address }"
+					style="width:150px;height:30px"> 
+					<input
+					name="user.userType" type="hidden" value="0" required> <input
+					name="user.dateStr" type="hidden" value="${user.dateStr}" required>
+					<input
+					name="user.userid" type="hidden" value="${user.userid }" required> <input
+					name="user.password" type="hidden" value="${user.password}" required>
+				</li>
+
+				<li class="list-group-item" style="text-align:center"><input
+					type="submit" value="修改"
+					style="border: none;font-family:'微软雅黑';background: #0FC491;color:rgb(252,253,255)"></li>
+				 
+			</ul>
 			</form>
 		</div>
 	</div>
 	
-	<!--导航-->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-				aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-		</div>
-		<div class="collapse navbar-collapse" id="navbar">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="index.html">首页</a></li>
-				<li><a href="#">国内</a></li>
-				<li><a href="#">国际</a></li>
-				<li><a href="#">体育</a></li>
-				<li><a href="#">娱乐</a></li>
-				<li><a href="#">游戏</a></li>
-				<li><a href="pages/back/back_login.jsp">后台管理</a></li>
-			</ul>
-			<%-- <c:if test="${empty user}">
-				<script type="text/javascript">
-				confirm("用户为空");
-					$('#modal').css('display', 'block');
-					$('.modal-bg').fadeIn();
-				</script>
-			</c:if> --%>
-			<!-- 用户以登陆，显示用户管理中心块 -->
-			 
-			<c:if test="${empty user}">
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"
-							role="button" aria-haspopup="true" aria-expanded="false">
-							${user.name}
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#">个人中心</a>
-							</li>
-							<li>
-								<a href="#">密码修改</a>
-							</li>
-							<li role="separator" class="divider"></li>
-							<li>
-								<a onclick="loginOut()">退出</a>
-							</li>
-
-						</ul>
-					</li>
-				</ul>
-			</c:if>
-		</div>
-	</div>
-	</nav>
-	<!--主体内容-->
-	<div class="divcenter" style="background:rgb(255,255,255);margin-bottom:200px;">
-		<div style="margin:0 auto;margin-top: 100px;width:300px">
-			 
-				<ul class="list-group" style="width:300px;">
-					<li class="list-group-item" style="">用户名:&nbsp;&nbsp;<input
-						type="text" value="张三" style="width:150px;height:30px"></li>
-					<li class="list-group-item">性&nbsp;&nbsp;&nbsp;别:&nbsp;&nbsp;<select
-						style="width:48px"><option>男</option>
-							<option>女</option></select>
-					</li>
-					<li class="list-group-item">年&nbsp;&nbsp;&nbsp;龄:&nbsp;&nbsp;<select><c:forEach
-								var="i" begin="1" end="120">
-								<option value="${i }">${i }</option>
-							</c:forEach>
-					</select>
-					</li>
-					<li class="list-group-item">地&nbsp;&nbsp;&nbsp;址:&nbsp;&nbsp;<input
-						type="text" name="" value="贵阳" style="width:150px;height:30px">
-					</li>
-					<li class="list-group-item" style="text-align:center"><input
-						type="submit" value="修改"
-						style="border: none;font-family:'微软雅黑';background: #0FC491;color:rgb(252,253,255)"></li>
-				</ul>
-		</div>
-	</div>
 	<!--底部-->
 	<div style="text-align: center;margin: 0 auto;">
 		<footer>
@@ -199,8 +87,6 @@
 		</div>
 		</footer>
 	</div>
-	
-	
 </body>
 </html>
 

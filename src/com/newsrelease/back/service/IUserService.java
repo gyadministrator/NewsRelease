@@ -23,4 +23,5 @@ public interface IUserService {
 			throws Exception;
 
 	public Map<String, Object> list(int pageNo, int pageSize) throws Exception;
+	public void updatePssword(int id,String password) throws Exception;
 }

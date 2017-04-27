@@ -49,7 +49,7 @@ public class NewsDAOImpl extends HibernateDaoSupport implements INewsDAO {
 			String column) throws Exception {
 
 		DetachedCriteria c = DetachedCriteria.forClass(News.class);
-		c.add(Restrictions.like(column, "%" + keyword + "%"));
+		c.add(Restrictions.like(column,keyword));
 		List<News> all = super.getHibernateTemplate().findByCriteria(c,
 				(pageNo - 1) * pageSize, pageSize);
 		return all;
@@ -60,7 +60,7 @@ public class NewsDAOImpl extends HibernateDaoSupport implements INewsDAO {
 		String hql = "SELECT COUNT(n) FROM News AS n WHERE n." + column
 				+ " LIKE ?";
 		@SuppressWarnings("rawtypes")
-		List all = super.getHibernateTemplate().find(hql, "%" + keyword + "%");
+		List all = super.getHibernateTemplate().find(hql,keyword);
 		return ((Long) all.get(0)).intValue();
 	}
 
@@ -87,4 +87,23 @@ public class NewsDAOImpl extends HibernateDaoSupport implements INewsDAO {
 		return super.getHibernateTemplate().loadAll(Newstype.class);
 	}
 
+	public List<News> findByIdAll(int pageNo, int pageSize,int keyword,
+			String column) throws Exception {
+
+		DetachedCriteria c = DetachedCriteria.forClass(News.class);
+		c.add(Restrictions.like(column,keyword));
+		List<News> all = super.getHibernateTemplate().findByCriteria(c,
+				(pageNo - 1) * pageSize, pageSize);
+		return all;
+	}
+
+	@Override
+	public int getByIdCount(int id, String column) throws Exception {
+		String hql = "SELECT COUNT(n) FROM News AS n WHERE n." + column
+				+ " LIKE ?";
+		@SuppressWarnings("rawtypes")
+		List all = super.getHibernateTemplate().find(hql,id);
+		return ((Long) all.get(0)).intValue();
+	}
+	
 }

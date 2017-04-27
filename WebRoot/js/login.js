@@ -6,6 +6,7 @@ function login() {
 		});
 		$('#close').click(function() {
 			$('.modal-bg').fadeOut();
+			$('#modal').css('display', 'none');
 			$('#modal').fadeOut();
 			return false;
 		});
@@ -19,6 +20,7 @@ function login() {
 		$('#close1').click(function() {
 			$('.modal-bg1').fadeOut();
 			$('#modal1').fadeOut();
+			 
 			return false;
 		});
 	}

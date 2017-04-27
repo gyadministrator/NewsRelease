@@ -53,25 +53,7 @@ public interface INewsService {
 	public Map<String, Object> findbyKeyword(int pageNo, int pageSize,
 			String keyword, String column) throws Exception;
 
-	/**
-	 * 通过关键字查询新闻，游客使用
-	 * 
-	 * @param pageNO
-	 *            当前页数
-	 * @param pageSize
-	 *            每页显示的大小
-	 * @param keyword
-	 *            查询的关键字
-	 * @param column
-	 *            新闻中的字段
-	 * @param keyword
-	 *            输入中的关键字
-	 * @return List<News>
-	 * 
-	 * @throws exception
-	 * */
-
-	public List<News> findsendAll(int pageNo, int pageSize) throws Exception;
+	 
 
 	/**
 	 * 查询所有的新闻，主要由管理员使用
@@ -91,4 +73,8 @@ public interface INewsService {
 	 * @throws Exception
 	 */
 	public void update(News news) throws Exception;
+	
+	public Map<String, Object> findByIdAll(int pageNo, int pageSize,
+			int keyword, String column) throws Exception;
+	
 }

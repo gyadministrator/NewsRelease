@@ -52,12 +52,6 @@ public class NewsServiceImpl implements INewsService {
 	}
 
 	@Override
-	public List<News> findsendAll(int pageNo, int pageSize) throws Exception {
-		// TODO Auto-generated method stub
-		return newsDAO.findAll(pageNo, pageSize);
-	}
-
-	@Override
 	public Map<String, Object> findAllNews(int pageNo, int pageSize)
 			throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -75,5 +69,17 @@ public class NewsServiceImpl implements INewsService {
 	public void update(News news) throws Exception {
 		newsDAO.doUpdate(news);
 	}
+
+	@Override
+	public Map<String, Object> findByIdAll(int pageNo, int pageSize,
+			int keyword, String column) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("allNews",
+				newsDAO.findByIdAll(pageNo, pageSize,keyword, column));
+		map.put("count", newsDAO.getByIdCount(keyword, column));
+		return map;
+	}
+
+	 
 
 }

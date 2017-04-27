@@ -2,5 +2,15 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<package name="front" extends="my_project_default" namespace="/pages/front">
+	 <action name="news_*" class="newsAction" method="{1}">
+	   <result name="list">/pages/front/front_index.jsp</result>
+	   <result name="show">/pages/front/front_comment.jsp</result>
+	 </action>
+	  <action name="comment_*" class="newsCommentSaveAction" method="{1}">
+	  <result name="show">/pages/front/front_comment.jsp</result>
+	  </action>
+	   <action name="history_*" class="newsHistoryAction" method="{1}">
+			<result name="one">/pages/front/history_list.jsp</result>
+		</action>
 	</package>
 </struts> 
